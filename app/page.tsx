@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { submitContactForm } from "./actions/contact";
 import {
   Globe,
   MapPin,
@@ -704,6 +705,20 @@ function FAQ() {
 
 function Contact() {
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+
+  async function handleSubmit(formData: FormData) {
+    setError(null);
+    startTransition(async () => {
+      const result = await submitContactForm(formData);
+      if (result.success) {
+        setSubmitted(true);
+      } else {
+        setError(result.error ?? "Something went wrong. Please try again.");
+      }
+    });
+  }
 
   return (
     <section
@@ -758,10 +773,7 @@ function Contact() {
               </div>
             ) : (
               <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setSubmitted(true);
-                }}
+                action={handleSubmit}
                 className="space-y-5"
               >
                 <div>
@@ -778,6 +790,7 @@ function Contact() {
                     />
                     <input
                       id="name"
+                      name="name"
                       type="text"
                       required
                       placeholder="John Smith"
@@ -800,6 +813,7 @@ function Contact() {
                     />
                     <input
                       id="business"
+                      name="business"
                       type="text"
                       required
                       placeholder="Smith's Plumbing"
@@ -823,6 +837,7 @@ function Contact() {
                       />
                       <input
                         id="phone"
+                        name="phone"
                         type="tel"
                         placeholder="(555) 123-4567"
                         className="w-full rounded-lg border border-border bg-surface py-3 pl-10 pr-4 text-sm text-foreground placeholder-muted/50 transition-colors focus:border-green focus:outline-none"
@@ -844,6 +859,7 @@ function Contact() {
                       />
                       <input
                         id="email"
+                        name="email"
                         type="email"
                         required
                         placeholder="john@example.com"
@@ -868,6 +884,7 @@ function Contact() {
                     />
                     <input
                       id="google-maps"
+                      name="google-maps"
                       type="url"
                       placeholder="https://maps.google.com/..."
                       className="w-full rounded-lg border border-border bg-surface py-3 pl-10 pr-4 text-sm text-foreground placeholder-muted/50 transition-colors focus:border-green focus:outline-none"
@@ -890,6 +907,7 @@ function Contact() {
                     />
                     <textarea
                       id="message"
+                      name="message"
                       rows={3}
                       placeholder="Tell us about your business..."
                       className="w-full rounded-lg border border-border bg-surface py-3 pl-10 pr-4 text-sm text-foreground placeholder-muted/50 transition-colors focus:border-green focus:outline-none"
@@ -897,11 +915,18 @@ function Contact() {
                   </div>
                 </div>
 
+                {error && (
+                  <p className="rounded-lg bg-red-500/10 px-4 py-3 text-sm text-red-400">
+                    {error}
+                  </p>
+                )}
+
                 <button
                   type="submit"
-                  className="w-full rounded-lg bg-green py-3.5 text-sm font-semibold text-background transition-all hover:bg-green-dark hover:scale-[1.01]"
+                  disabled={isPending}
+                  className="w-full rounded-lg bg-green py-3.5 text-sm font-semibold text-background transition-all hover:bg-green-dark hover:scale-[1.01] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Get My Free Preview
+                  {isPending ? "Sending..." : "Get My Free Preview"}
                 </button>
 
                 <p className="text-center text-xs text-muted">
