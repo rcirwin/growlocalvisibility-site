@@ -1,0 +1,972 @@
+"use client";
+
+import Image from "next/image";
+import { useState } from "react";
+import {
+  Globe,
+  MapPin,
+  BarChart3,
+  MessageSquare,
+  Activity,
+  Search,
+  Hammer,
+  Users,
+  ChevronDown,
+  Check,
+  ArrowRight,
+  Mail,
+  Phone,
+  Building2,
+  User,
+  MessageCircle,
+  Star,
+  Menu,
+  X,
+  ExternalLink,
+  Link2,
+} from "lucide-react";
+
+function LinkedinIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+    </svg>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  NAVIGATION                                                         */
+/* ------------------------------------------------------------------ */
+
+function Navbar() {
+  const [open, setOpen] = useState(false);
+
+  const links = [
+    { label: "Services", href: "#services" },
+    { label: "How It Works", href: "#how-it-works" },
+    { label: "Pricing", href: "#pricing" },
+    { label: "About", href: "#about" },
+    { label: "FAQ", href: "#faq" },
+  ];
+
+  return (
+    <nav
+      className="fixed top-0 left-0 right-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl"
+      aria-label="Main navigation"
+    >
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <a href="#" className="flex items-center gap-2 text-lg font-semibold">
+          <MapPin className="h-5 w-5 text-green" aria-hidden="true" />
+          <span>
+            Grow<span className="text-green">Local</span>
+          </span>
+        </a>
+
+        {/* Desktop links */}
+        <div className="hidden items-center gap-8 md:flex">
+          {links.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="text-sm text-muted transition-colors hover:text-foreground"
+            >
+              {l.label}
+            </a>
+          ))}
+          <a
+            href="#contact"
+            className="rounded-lg bg-green px-4 py-2 text-sm font-medium text-background transition-colors hover:bg-green-dark"
+          >
+            Get Started
+          </a>
+        </div>
+
+        {/* Mobile hamburger */}
+        <button
+          onClick={() => setOpen(!open)}
+          className="md:hidden text-foreground"
+          aria-label={open ? "Close menu" : "Open menu"}
+        >
+          {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </button>
+      </div>
+
+      {/* Mobile menu */}
+      {open && (
+        <div className="border-t border-border bg-background px-6 py-4 md:hidden">
+          {links.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              onClick={() => setOpen(false)}
+              className="block py-3 text-sm text-muted transition-colors hover:text-foreground"
+            >
+              {l.label}
+            </a>
+          ))}
+          <a
+            href="#contact"
+            onClick={() => setOpen(false)}
+            className="mt-2 block rounded-lg bg-green px-4 py-3 text-center text-sm font-medium text-background transition-colors hover:bg-green-dark"
+          >
+            Get Started
+          </a>
+        </div>
+      )}
+    </nav>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  HERO                                                               */
+/* ------------------------------------------------------------------ */
+
+function Hero() {
+  return (
+    <section className="relative flex min-h-[90vh] items-center justify-center overflow-hidden pt-20">
+      {/* Subtle radial glow */}
+      <div
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full opacity-20"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(34,197,94,0.35) 0%, transparent 70%)",
+        }}
+        aria-hidden="true"
+      />
+
+      <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
+        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-1.5 text-sm text-muted">
+          <Star className="h-4 w-4 text-green" aria-hidden="true" />
+          Trusted by local businesses
+        </div>
+
+        <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+          Get Found By More{" "}
+          <span className="text-green">Local Customers</span>
+        </h1>
+
+        <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl">
+          We help local service businesses build a professional online presence
+          and get discovered by more customers searching on Google.
+        </p>
+
+        <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+          <a
+            href="#how-it-works"
+            className="inline-flex items-center gap-2 rounded-lg bg-green px-8 py-4 text-base font-semibold text-background transition-all hover:bg-green-dark hover:scale-[1.02]"
+          >
+            See What We Can Do For You
+            <ArrowRight className="h-5 w-5" aria-hidden="true" />
+          </a>
+          <a
+            href="#pricing"
+            className="inline-flex items-center gap-2 rounded-lg border border-border px-8 py-4 text-base font-medium text-muted transition-colors hover:border-green hover:text-foreground"
+          >
+            View Pricing
+          </a>
+        </div>
+
+        <div className="mx-auto mt-16 grid max-w-xl grid-cols-3 gap-8 text-center">
+          {[
+            { value: "97%", label: "Search online first" },
+            { value: "46%", label: "Of Google searches are local" },
+            { value: "78%", label: "Choose the first result" },
+          ].map((stat) => (
+            <div key={stat.label}>
+              <p className="text-2xl font-bold text-green sm:text-3xl">
+                {stat.value}
+              </p>
+              <p className="mt-1 text-xs text-muted sm:text-sm">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  THE PROBLEM                                                        */
+/* ------------------------------------------------------------------ */
+
+function Problem() {
+  return (
+    <section className="border-t border-border py-24">
+      <div className="mx-auto max-w-4xl px-6 text-center">
+        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+          You&rsquo;re Great at What You Do
+        </h2>
+        <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-muted">
+          But if customers can&rsquo;t find you online, you&rsquo;re losing
+          business every single day.
+        </p>
+
+        <div className="mt-12 grid gap-6 sm:grid-cols-3">
+          {[
+            {
+              icon: Search,
+              stat: "97%",
+              text: "of consumers search online for local services before making a call",
+            },
+            {
+              icon: MapPin,
+              stat: "46%",
+              text: "of all Google searches are people looking for local businesses",
+            },
+            {
+              icon: Globe,
+              stat: "70%",
+              text: "of customers won't consider a business without a website",
+            },
+          ].map((item) => (
+            <div
+              key={item.stat}
+              className="rounded-xl border border-border bg-surface p-8 transition-colors hover:border-green/30"
+            >
+              <item.icon
+                className="mx-auto h-8 w-8 text-green"
+                aria-hidden="true"
+              />
+              <p className="mt-4 text-3xl font-bold text-green">{item.stat}</p>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                {item.text}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <p className="mt-10 text-base text-muted">
+          If you don&rsquo;t have a strong online presence, your competitors are
+          getting <span className="font-semibold text-foreground">your</span>{" "}
+          customers.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  SERVICES / VALUE STACK                                             */
+/* ------------------------------------------------------------------ */
+
+const services = [
+  {
+    icon: Globe,
+    title: "Professional Website",
+    description:
+      "Custom-built, mobile-first website that makes your business look as good online as it does in person.",
+  },
+  {
+    icon: MapPin,
+    title: "Google Business Profile Optimization",
+    description:
+      "We optimize your Google listing so you rank higher when people search in your area.",
+  },
+  {
+    icon: BarChart3,
+    title: "Monthly SEO Report",
+    description:
+      "Know exactly how people are finding you. Traffic, rankings, and visibility metrics delivered monthly.",
+  },
+  {
+    icon: MessageSquare,
+    title: "Automated Review Responses",
+    description:
+      "Never miss responding to a review again. Our AI handles it professionally, 24/7.",
+  },
+  {
+    icon: Activity,
+    title: "Analytics Dashboard",
+    description:
+      "See who's visiting your site, where they came from, and what they're looking at.",
+  },
+];
+
+function Services() {
+  return (
+    <section id="services" className="border-t border-border py-24">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="text-center">
+          <p className="text-sm font-semibold uppercase tracking-wider text-green">
+            Everything You Need
+          </p>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+            What You Get
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted">
+            A complete online presence, built and managed for you. No tech
+            skills required.
+          </p>
+        </div>
+
+        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {services.map((service) => (
+            <div
+              key={service.title}
+              className="group rounded-xl border border-border bg-surface p-8 transition-all hover:border-green/40 hover:bg-surface-light"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green/10">
+                <service.icon
+                  className="h-6 w-6 text-green"
+                  aria-hidden="true"
+                />
+              </div>
+              <h3 className="mt-5 text-lg font-semibold">{service.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                {service.description}
+              </p>
+            </div>
+          ))}
+
+          {/* Extra card - CTA */}
+          <div className="group flex flex-col items-center justify-center rounded-xl border border-dashed border-border p-8 text-center transition-colors hover:border-green/40">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green/10">
+              <Star className="h-6 w-6 text-green" aria-hidden="true" />
+            </div>
+            <h3 className="mt-5 text-lg font-semibold">All Included</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted">
+              Everything above is included in a single, simple monthly plan. No
+              hidden fees.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  HOW IT WORKS                                                       */
+/* ------------------------------------------------------------------ */
+
+function HowItWorks() {
+  const steps = [
+    {
+      num: "01",
+      icon: Search,
+      title: "We Find Your Business on Google Maps",
+      description:
+        "We locate your business and audit your current online presence. We figure out exactly where the gaps are.",
+    },
+    {
+      num: "02",
+      icon: Hammer,
+      title: "We Build Your Complete Online Presence",
+      description:
+        "Professional website, optimized Google profile, review automation, and analytics. All set up for you.",
+    },
+    {
+      num: "03",
+      icon: Users,
+      title: "You Start Getting More Customers",
+      description:
+        "Your business shows up when local customers search. More visibility means more calls, more jobs, more revenue.",
+    },
+  ];
+
+  return (
+    <section
+      id="how-it-works"
+      className="border-t border-border bg-surface py-24"
+    >
+      <div className="mx-auto max-w-5xl px-6">
+        <div className="text-center">
+          <p className="text-sm font-semibold uppercase tracking-wider text-green">
+            Simple Process
+          </p>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+            How It Works
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-lg text-muted">
+            Three steps. Zero hassle. We handle everything.
+          </p>
+        </div>
+
+        <div className="mt-16 grid gap-12 md:grid-cols-3">
+          {steps.map((step) => (
+            <div key={step.num} className="text-center">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border-2 border-green bg-green/10">
+                <step.icon className="h-7 w-7 text-green" aria-hidden="true" />
+              </div>
+              <p className="mt-6 text-xs font-bold uppercase tracking-widest text-green">
+                Step {step.num}
+              </p>
+              <h3 className="mt-2 text-lg font-semibold">{step.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-muted">
+                {step.description}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-16 text-center">
+          <a
+            href="#pricing"
+            className="inline-flex items-center gap-2 rounded-lg bg-green px-8 py-4 text-base font-semibold text-background transition-all hover:bg-green-dark hover:scale-[1.02]"
+          >
+            Get Your Free Preview
+            <ArrowRight className="h-5 w-5" aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  PRICING                                                            */
+/* ------------------------------------------------------------------ */
+
+function Pricing() {
+  const plans = [
+    {
+      name: "Free Preview",
+      price: "$0",
+      period: "",
+      description:
+        "We build it first. You decide if you want to keep it. No risk.",
+      features: [
+        "Custom-built website preview",
+        "See your site before committing",
+        "No credit card required",
+        "Zero obligation",
+      ],
+      cta: "Get Your Free Preview",
+      href: "#contact",
+      highlighted: false,
+    },
+    {
+      name: "Keep It Live",
+      price: "$99",
+      period: "/mo",
+      description:
+        "Website, Google optimization, SEO reports, review automation, analytics. Everything handled.",
+      features: [
+        "Professional website, hosted & maintained",
+        "Google Business Profile optimization",
+        "Monthly SEO report",
+        "Automated review responses",
+        "Analytics dashboard",
+        "Unlimited changes included",
+        "Priority support",
+      ],
+      cta: "Start With Free Preview",
+      href: "#contact",
+      highlighted: true,
+    },
+    {
+      name: "Own It Outright",
+      price: "$500",
+      period: " one-time",
+      description:
+        "Get the full website code. Deploy it yourself, wherever you want.",
+      features: [
+        "Full website source code",
+        "Deploy anywhere you want",
+        "One-time payment",
+        "Code is 100% yours",
+      ],
+      cta: "Get Your Free Preview",
+      href: "#contact",
+      highlighted: false,
+    },
+  ];
+
+  return (
+    <section id="pricing" className="border-t border-border py-24">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="text-center">
+          <p className="text-sm font-semibold uppercase tracking-wider text-green">
+            Simple Pricing
+          </p>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+            No Surprises. No Contracts.
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-lg text-muted">
+            Start with a free preview. Keep it live when you&rsquo;re ready.
+          </p>
+        </div>
+
+        <div className="mt-16 grid gap-8 lg:grid-cols-3">
+          {plans.map((plan) => (
+            <div
+              key={plan.name}
+              className={`relative flex flex-col rounded-2xl border p-8 transition-colors ${
+                plan.highlighted
+                  ? "border-green bg-surface-light shadow-lg shadow-green/5"
+                  : "border-border bg-surface hover:border-green/30"
+              }`}
+            >
+              {plan.highlighted && (
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-green px-4 py-1 text-xs font-bold uppercase tracking-wider text-background">
+                  Most Popular
+                </div>
+              )}
+
+              <h3 className="text-lg font-semibold">{plan.name}</h3>
+              <div className="mt-4 flex items-baseline gap-1">
+                <span className="text-4xl font-bold">{plan.price}</span>
+                {plan.period && (
+                  <span className="text-muted">{plan.period}</span>
+                )}
+              </div>
+              <p className="mt-4 text-sm leading-relaxed text-muted">
+                {plan.description}
+              </p>
+
+              <ul className="mt-8 flex-1 space-y-3" role="list">
+                {plan.features.map((feature) => (
+                  <li key={feature} className="flex items-start gap-3 text-sm">
+                    <Check
+                      className="mt-0.5 h-4 w-4 shrink-0 text-green"
+                      aria-hidden="true"
+                    />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <a
+                href={plan.href}
+                className={`mt-8 block rounded-lg py-3 text-center text-sm font-semibold transition-all ${
+                  plan.highlighted
+                    ? "bg-green text-background hover:bg-green-dark"
+                    : "border border-border text-foreground hover:border-green hover:text-green"
+                }`}
+              >
+                {plan.cta}
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  ABOUT                                                              */
+/* ------------------------------------------------------------------ */
+
+function About() {
+  return (
+    <section id="about" className="border-t border-border bg-surface py-24">
+      <div className="mx-auto max-w-4xl px-6">
+        <div className="flex flex-col items-center gap-10 md:flex-row md:gap-16">
+          <a
+            href="https://www.linkedin.com/in/ryan-irwin-tech/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shrink-0 group"
+          >
+            <div className="relative">
+              <Image
+                src="/ryan.jpg"
+                alt="Ryan Irwin, founder of Grow Local Visibility"
+                width={220}
+                height={220}
+                className="rounded-2xl border-2 border-border object-cover transition-all group-hover:border-green"
+                priority={false}
+              />
+              <div className="absolute -bottom-2 -right-2 flex h-10 w-10 items-center justify-center rounded-full bg-[#0A66C2] text-white shadow-lg transition-transform group-hover:scale-110">
+                <LinkedinIcon className="h-5 w-5" aria-hidden="true" />
+              </div>
+            </div>
+          </a>
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wider text-green">
+              Meet the Founder
+            </p>
+            <a
+              href="https://www.linkedin.com/in/ryan-irwin-tech/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group"
+            >
+              <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl group-hover:text-green transition-colors">
+                Hey, I&rsquo;m Ryan
+              </h2>
+            </a>
+            <p className="mt-4 text-base leading-relaxed text-muted">
+              I started Grow Local Visibility because I saw too many talented
+              tradespeople and local service pros losing customers simply because
+              they didn&rsquo;t have an online presence. I handle all the tech so
+              you can focus on what you do best: running your business and
+              serving your customers.
+            </p>
+            <div className="mt-6 flex items-center gap-4">
+              <a
+                href="https://www.linkedin.com/in/ryan-irwin-tech/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[#0A66C2] transition-colors hover:text-[#004182]"
+              >
+                <LinkedinIcon className="h-4 w-4" aria-hidden="true" />
+                Connect on LinkedIn
+              </a>
+              <a
+                href="#contact"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-green transition-colors hover:text-green-dark"
+              >
+                Let&rsquo;s talk
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  FAQ                                                                */
+/* ------------------------------------------------------------------ */
+
+const faqs = [
+  {
+    q: "Do I need to do anything?",
+    a: "No. We handle everything, from building your website to optimizing your Google listing. You just keep running your business.",
+  },
+  {
+    q: "What if I don't like the website?",
+    a: "No problem at all. The preview is completely free. If you don't love it, you don't pay a thing. Zero commitment.",
+  },
+  {
+    q: "Can I make changes?",
+    a: "Absolutely. Unlimited changes are included in the $99/mo plan. Just let us know what you need and we'll take care of it.",
+  },
+  {
+    q: "Do I need to be tech-savvy?",
+    a: "Not at all. We handle all the technical stuff. If you can send a text message, you can work with us.",
+  },
+  {
+    q: "What's included in the $99/month?",
+    a: "Everything: website hosting and maintenance, Google Business Profile optimization, monthly SEO reports, automated review responses, and your analytics dashboard. No hidden fees.",
+  },
+];
+
+function FAQItem({ faq }: { faq: { q: string; a: string } }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="border-b border-border">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex w-full items-center justify-between py-6 text-left"
+        aria-expanded={open}
+      >
+        <span className="pr-4 text-base font-medium">{faq.q}</span>
+        <ChevronDown
+          className={`h-5 w-5 shrink-0 text-muted transition-transform ${
+            open ? "rotate-180" : ""
+          }`}
+          aria-hidden="true"
+        />
+      </button>
+      <div
+        className={`overflow-hidden transition-all duration-300 ${
+          open ? "max-h-40 pb-6" : "max-h-0"
+        }`}
+      >
+        <p className="text-sm leading-relaxed text-muted">{faq.a}</p>
+      </div>
+    </div>
+  );
+}
+
+function FAQ() {
+  return (
+    <section id="faq" className="border-t border-border py-24">
+      <div className="mx-auto max-w-3xl px-6">
+        <div className="text-center">
+          <p className="text-sm font-semibold uppercase tracking-wider text-green">
+            Questions?
+          </p>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+            Frequently Asked Questions
+          </h2>
+        </div>
+
+        <div className="mt-12">
+          {faqs.map((faq) => (
+            <FAQItem key={faq.q} faq={faq} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  CONTACT / CTA                                                      */
+/* ------------------------------------------------------------------ */
+
+function Contact() {
+  const [submitted, setSubmitted] = useState(false);
+
+  return (
+    <section
+      id="contact"
+      className="border-t border-border bg-surface py-24"
+    >
+      <div className="mx-auto max-w-5xl px-6">
+        <div className="grid gap-16 lg:grid-cols-2">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wider text-green">
+              Get Started
+            </p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+              Ready to Get Found by More Customers?
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-muted">
+              Fill out the form and we&rsquo;ll get back to you within 24 hours
+              with your free website preview. No obligations, no credit card, no
+              risk.
+            </p>
+
+            <div className="mt-10 space-y-6">
+              <div className="flex items-center gap-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green/10">
+                  <Mail className="h-5 w-5 text-green" aria-hidden="true" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted">Email us directly</p>
+                  <a
+                    href="mailto:ryan@growlocalvisibility.com"
+                    className="font-medium text-foreground hover:text-green"
+                  >
+                    ryan@growlocalvisibility.com
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-border bg-background p-8">
+            {submitted ? (
+              <div className="flex h-full flex-col items-center justify-center text-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green/10">
+                  <Check className="h-8 w-8 text-green" />
+                </div>
+                <h3 className="mt-4 text-xl font-semibold">
+                  Thank You!
+                </h3>
+                <p className="mt-2 text-sm text-muted">
+                  We&rsquo;ll be in touch within 24 hours.
+                </p>
+              </div>
+            ) : (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setSubmitted(true);
+                }}
+                className="space-y-5"
+              >
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="mb-1.5 block text-sm font-medium"
+                  >
+                    Your Name
+                  </label>
+                  <div className="relative">
+                    <User
+                      className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
+                      aria-hidden="true"
+                    />
+                    <input
+                      id="name"
+                      type="text"
+                      required
+                      placeholder="John Smith"
+                      className="w-full rounded-lg border border-border bg-surface py-3 pl-10 pr-4 text-sm text-foreground placeholder-muted/50 transition-colors focus:border-green focus:outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="business"
+                    className="mb-1.5 block text-sm font-medium"
+                  >
+                    Business Name
+                  </label>
+                  <div className="relative">
+                    <Building2
+                      className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
+                      aria-hidden="true"
+                    />
+                    <input
+                      id="business"
+                      type="text"
+                      required
+                      placeholder="Smith's Plumbing"
+                      className="w-full rounded-lg border border-border bg-surface py-3 pl-10 pr-4 text-sm text-foreground placeholder-muted/50 transition-colors focus:border-green focus:outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label
+                      htmlFor="phone"
+                      className="mb-1.5 block text-sm font-medium"
+                    >
+                      Phone
+                    </label>
+                    <div className="relative">
+                      <Phone
+                        className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
+                        aria-hidden="true"
+                      />
+                      <input
+                        id="phone"
+                        type="tel"
+                        placeholder="(555) 123-4567"
+                        className="w-full rounded-lg border border-border bg-surface py-3 pl-10 pr-4 text-sm text-foreground placeholder-muted/50 transition-colors focus:border-green focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="mb-1.5 block text-sm font-medium"
+                    >
+                      Email
+                    </label>
+                    <div className="relative">
+                      <Mail
+                        className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
+                        aria-hidden="true"
+                      />
+                      <input
+                        id="email"
+                        type="email"
+                        required
+                        placeholder="john@example.com"
+                        className="w-full rounded-lg border border-border bg-surface py-3 pl-10 pr-4 text-sm text-foreground placeholder-muted/50 transition-colors focus:border-green focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="google-maps"
+                    className="mb-1.5 block text-sm font-medium"
+                  >
+                    Google Maps Link{" "}
+                    <span className="text-muted">(paste your business listing URL)</span>
+                  </label>
+                  <div className="relative">
+                    <Link2
+                      className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
+                      aria-hidden="true"
+                    />
+                    <input
+                      id="google-maps"
+                      type="url"
+                      placeholder="https://maps.google.com/..."
+                      className="w-full rounded-lg border border-border bg-surface py-3 pl-10 pr-4 text-sm text-foreground placeholder-muted/50 transition-colors focus:border-green focus:outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="message"
+                    className="mb-1.5 block text-sm font-medium"
+                  >
+                    Message{" "}
+                    <span className="text-muted">(optional)</span>
+                  </label>
+                  <div className="relative">
+                    <MessageCircle
+                      className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted"
+                      aria-hidden="true"
+                    />
+                    <textarea
+                      id="message"
+                      rows={3}
+                      placeholder="Tell us about your business..."
+                      className="w-full rounded-lg border border-border bg-surface py-3 pl-10 pr-4 text-sm text-foreground placeholder-muted/50 transition-colors focus:border-green focus:outline-none"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full rounded-lg bg-green py-3.5 text-sm font-semibold text-background transition-all hover:bg-green-dark hover:scale-[1.01]"
+                >
+                  Get My Free Preview
+                </button>
+
+                <p className="text-center text-xs text-muted">
+                  No credit card required. We&rsquo;ll never spam you.
+                </p>
+              </form>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  FOOTER                                                             */
+/* ------------------------------------------------------------------ */
+
+function Footer() {
+  return (
+    <footer className="border-t border-border py-12">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:justify-between sm:text-left">
+          <div className="flex items-center gap-2 text-sm font-semibold">
+            <MapPin className="h-4 w-4 text-green" aria-hidden="true" />
+            <span>
+              Grow<span className="text-green">Local</span> Visibility
+            </span>
+          </div>
+
+          <a
+            href="mailto:ryan@growlocalvisibility.com"
+            className="text-sm text-muted transition-colors hover:text-foreground"
+          >
+            ryan@growlocalvisibility.com
+          </a>
+
+          <p className="text-sm text-muted">
+            &copy; {new Date().getFullYear()} Grow Local Visibility
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  PAGE                                                               */
+/* ------------------------------------------------------------------ */
+
+export default function Home() {
+  return (
+    <>
+      <Navbar />
+      <main>
+        <Hero />
+        <Problem />
+        <Services />
+        <HowItWorks />
+        <About />
+        <Pricing />
+        <FAQ />
+        <Contact />
+      </main>
+      <Footer />
+    </>
+  );
+}
