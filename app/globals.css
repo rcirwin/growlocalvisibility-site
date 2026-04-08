@@ -1,53 +1,48 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-  --green: #22c55e;
-  --green-dark: #16a34a;
-  --surface: #141414;
-  --surface-light: #1a1a1a;
-  --border: #262626;
-  --muted: #a1a1aa;
+  --background: #fafaf9;
+  --surface: #ffffff;
+  --foreground: #0c0a09;
+  --muted: #78716c;
+  --border: #e7e5e4;
+  --green: #16a34a;
+  --green-dark: #15803d;
+  --green-light: #f0fdf4;
+  --green-muted: #dcfce7;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
   --color-green: var(--green);
   --color-green-dark: var(--green-dark);
-  --color-surface: var(--surface);
-  --color-surface-light: var(--surface-light);
-  --color-border: var(--border);
-  --color-muted: var(--muted);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  --color-green-light: var(--green-light);
+  --color-green-muted: var(--green-muted);
+  --font-sans: var(--font-jakarta);
 }
 
 html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
+body {
   background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-jakarta), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 4px;
+/* Button press feedback — emil-design-eng */
+button:active:not(:disabled),
+a.btn:active {
+  transform: scale(0.97);
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--muted);
-}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--background); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
