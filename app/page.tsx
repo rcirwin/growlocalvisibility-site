@@ -204,55 +204,27 @@ function Hero() {
 
 function Problem() {
   return (
-    <section className="border-t border-border py-24">
+    <section className="border-t border-border bg-stone-50 py-20">
       <div className="mx-auto max-w-4xl px-6 text-center">
         <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          You&rsquo;re Great at What You Do
+          You&rsquo;re Great at What You Do.
+          <br />
+          <span className="text-muted">But Can Customers Find You?</span>
         </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-muted">
-          But if customers can&rsquo;t find you online, you&rsquo;re losing
-          business every single day.
+        <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-muted">
+          Most local service businesses win on quality — but lose customers every
+          day because they don&rsquo;t show up when people search. Your
+          competitors are getting those calls. We fix that.
         </p>
-
-        <div className="mt-12 grid gap-6 sm:grid-cols-3">
-          {[
-            {
-              icon: Search,
-              stat: "97%",
-              text: "of consumers search online for local services before making a call",
-            },
-            {
-              icon: MapPin,
-              stat: "46%",
-              text: "of all Google searches are people looking for local businesses",
-            },
-            {
-              icon: Globe,
-              stat: "70%",
-              text: "of customers won't consider a business without a website",
-            },
-          ].map((item) => (
-            <div
-              key={item.stat}
-              className="rounded-xl border border-border bg-surface p-8 transition-colors hover:border-green/30"
-            >
-              <item.icon
-                className="mx-auto h-8 w-8 text-green"
-                aria-hidden="true"
-              />
-              <p className="mt-4 text-3xl font-bold text-green">{item.stat}</p>
-              <p className="mt-2 text-sm leading-relaxed text-muted">
-                {item.text}
-              </p>
-            </div>
-          ))}
+        <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <a
+            href="#services"
+            className="inline-flex items-center gap-2 rounded-full bg-green px-7 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-green-dark"
+          >
+            See What&rsquo;s Included
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </a>
         </div>
-
-        <p className="mt-10 text-base text-muted">
-          If you don&rsquo;t have a strong online presence, your competitors are
-          getting <span className="font-semibold text-foreground">your</span>{" "}
-          customers.
-        </p>
       </div>
     </section>
   );
@@ -267,31 +239,31 @@ const services = [
     icon: Globe,
     title: "Professional Website",
     description:
-      "Custom-built, mobile-first website that makes your business look as good online as it does in person.",
+      "Custom-built, mobile-first, and SEO-ready. Your site is built specifically for your business — not a template anyone else has.",
   },
   {
     icon: MapPin,
-    title: "Google Business Profile Optimization",
+    title: "Google Business Profile",
     description:
-      "We optimize your Google listing so you rank higher when people search in your area.",
+      "We optimize your Google listing so you rank higher when people nearby search for what you do.",
   },
   {
     icon: BarChart3,
     title: "Monthly SEO Report",
     description:
-      "Know exactly how people are finding you. Traffic, rankings, and visibility metrics delivered monthly.",
+      "A clear monthly report showing your traffic, rankings, and visibility. Know exactly what\u2019s working.",
   },
   {
     icon: MessageSquare,
     title: "Automated Review Responses",
     description:
-      "Never miss responding to a review again. Our AI handles it professionally, 24/7.",
+      "Every Google review gets a professional response — automatically, 24/7. Never let a review go unanswered.",
   },
   {
     icon: Activity,
     title: "Analytics Dashboard",
     description:
-      "See who's visiting your site, where they came from, and what they're looking at.",
+      "See who\u2019s visiting your site, where they came from, and what pages they view. Real data, plain language.",
   },
 ];
 
@@ -299,16 +271,16 @@ function Services() {
   return (
     <section id="services" className="border-t border-border py-24">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="text-center">
+        <div className="max-w-2xl">
           <p className="text-sm font-semibold uppercase tracking-wider text-green">
-            Everything You Need
+            Everything Included
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-            What You Get
+            One Plan. Your Complete Online Presence.
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted">
-            A complete online presence, built and managed for you. No tech
-            skills required.
+          <p className="mt-4 text-lg text-muted">
+            Everything below is included. No add-ons, no hidden fees, no tech
+            skills required on your end.
           </p>
         </div>
 
@@ -316,31 +288,38 @@ function Services() {
           {services.map((service) => (
             <div
               key={service.title}
-              className="group rounded-xl border border-border bg-surface p-8 transition-all hover:border-green/40 hover:bg-surface-light"
+              className="group rounded-2xl border border-border bg-surface p-7 transition-all hover:border-green/40 hover:shadow-md hover:shadow-stone-100"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green/10">
-                <service.icon
-                  className="h-6 w-6 text-green"
-                  aria-hidden="true"
-                />
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-green-light">
+                <service.icon className="h-5 w-5 text-green" aria-hidden="true" />
               </div>
-              <h3 className="mt-5 text-lg font-semibold">{service.title}</h3>
+              <h3 className="mt-5 text-base font-semibold text-foreground">
+                {service.title}
+              </h3>
               <p className="mt-2 text-sm leading-relaxed text-muted">
                 {service.description}
               </p>
             </div>
           ))}
 
-          {/* Extra card - CTA */}
-          <div className="group flex flex-col items-center justify-center rounded-xl border border-dashed border-border p-8 text-center transition-colors hover:border-green/40">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green/10">
-              <Star className="h-6 w-6 text-green" aria-hidden="true" />
+          <div className="flex flex-col items-start justify-between rounded-2xl border border-dashed border-green/40 bg-green-light p-7">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-green/10">
+              <Star className="h-5 w-5 text-green" aria-hidden="true" />
             </div>
-            <h3 className="mt-5 text-lg font-semibold">All Included</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted">
-              Everything above is included in a single, simple monthly plan. No
-              hidden fees.
-            </p>
+            <div className="mt-5">
+              <h3 className="text-base font-semibold text-foreground">
+                All of the Above
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                Every service above is included in one simple monthly price.
+              </p>
+              <a
+                href="#pricing"
+                className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-green hover:text-green-dark transition-colors"
+              >
+                See pricing <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -357,68 +336,68 @@ function HowItWorks() {
     {
       num: "01",
       icon: Search,
-      title: "We Find Your Business on Google Maps",
+      title: "We Research Your Business",
       description:
-        "We locate your business and audit your current online presence. We figure out exactly where the gaps are.",
+        "We find your Google listing, study your reviews, and learn what makes your business stand out. No questionnaires. No homework for you.",
     },
     {
       num: "02",
       icon: Hammer,
-      title: "We Build Your Complete Online Presence",
+      title: "We Build Your Online Presence",
       description:
-        "Professional website, optimized Google profile, review automation, and analytics. All set up for you.",
+        "A professional website, optimized Google profile, automated review responses, and analytics — all set up and ready before we reach out.",
     },
     {
       num: "03",
       icon: Users,
-      title: "You Start Getting More Customers",
+      title: "You Start Showing Up",
       description:
-        "Your business shows up when local customers search. More visibility means more calls, more jobs, more revenue.",
+        "Once you\u2019re live, local customers searching for what you do will find you. More visibility means more calls, more jobs, more revenue.",
     },
   ];
 
   return (
-    <section
-      id="how-it-works"
-      className="border-t border-border bg-surface py-24"
-    >
+    <section id="how-it-works" className="border-t border-border bg-stone-50 py-24">
       <div className="mx-auto max-w-5xl px-6">
-        <div className="text-center">
+        <div className="max-w-xl">
           <p className="text-sm font-semibold uppercase tracking-wider text-green">
-            Simple Process
+            The Process
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-            How It Works
+            We Do the Work. You Get the Customers.
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-lg text-muted">
-            Three steps. Zero hassle. We handle everything.
+          <p className="mt-4 text-lg text-muted">
+            Three steps. Zero hassle. You don&rsquo;t touch a thing until you
+            see your finished site.
           </p>
         </div>
 
-        <div className="mt-16 grid gap-12 md:grid-cols-3">
+        <div className="mt-16 grid gap-10 md:grid-cols-3">
           {steps.map((step) => (
-            <div key={step.num} className="text-center">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border-2 border-green bg-green/10">
-                <step.icon className="h-7 w-7 text-green" aria-hidden="true" />
+            <div key={step.num} className="relative">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl border-2 border-green bg-green-light">
+                <step.icon className="h-5 w-5 text-green" aria-hidden="true" />
               </div>
-              <p className="mt-6 text-xs font-bold uppercase tracking-widest text-green">
+              <p className="mt-5 text-xs font-bold uppercase tracking-widest text-green">
                 Step {step.num}
               </p>
-              <h3 className="mt-2 text-lg font-semibold">{step.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted">
+              <h3 className="mt-1.5 text-base font-semibold text-foreground">
+                {step.title}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
                 {step.description}
               </p>
             </div>
           ))}
         </div>
 
-        <div className="mt-16 text-center">
+        <div className="mt-16">
           <a
-            href="#pricing"
-            className="inline-flex items-center gap-2 rounded-lg bg-green px-8 py-4 text-base font-semibold text-background transition-all hover:bg-green-dark hover:scale-[1.02]"
+            href="#contact"
+            className="inline-flex items-center gap-2 rounded-full bg-green px-8 py-4 text-base font-semibold text-white transition-colors hover:bg-green-dark"
           >
-            Get Your Free Preview
-            <ArrowRight className="h-5 w-5" aria-hidden="true" />
+            Get My Free Preview
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </a>
         </div>
       </div>
@@ -436,15 +415,14 @@ function Pricing() {
       name: "Free Preview",
       price: "$0",
       period: "",
-      description:
-        "We build it first. You decide if you want to keep it. No risk.",
+      description: "We build your site first. You see it, review it, and decide. No risk, no card required.",
       features: [
         "Custom-built website preview",
         "See your site before committing",
         "No credit card required",
         "Zero obligation",
       ],
-      cta: "Get Your Free Preview",
+      cta: "Request Free Preview",
       href: "#contact",
       highlighted: false,
     },
@@ -452,15 +430,14 @@ function Pricing() {
       name: "Keep It Live",
       price: "$99",
       period: "/mo",
-      description:
-        "Website, Google optimization, SEO reports, review automation, analytics. Everything handled.",
+      description: "Everything you need to stay found online — website, Google, reviews, and analytics. All handled.",
       features: [
         "Professional website, hosted & maintained",
         "Google Business Profile optimization",
-        "Monthly SEO report",
-        "Automated review responses",
+        "Monthly SEO performance report",
+        "Automated Google review responses",
         "Analytics dashboard",
-        "Unlimited changes included",
+        "Unlimited content changes",
         "Priority support",
       ],
       cta: "Start With Free Preview",
@@ -471,79 +448,77 @@ function Pricing() {
       name: "Own It Outright",
       price: "$500",
       period: " one-time",
-      description:
-        "Get the full website code. Deploy it yourself, wherever you want.",
+      description: "Get the full source code. Host it yourself, wherever you want. Yours permanently.",
       features: [
         "Full website source code",
-        "Deploy anywhere you want",
+        "Deploy to any host",
         "One-time payment",
-        "Code is 100% yours",
+        "No ongoing fees",
       ],
-      cta: "Get Your Free Preview",
+      cta: "Request Free Preview",
       href: "#contact",
       highlighted: false,
     },
   ];
 
   return (
-    <section id="pricing" className="border-t border-border py-24">
+    <section id="pricing" className="border-t border-border bg-stone-50 py-24">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="text-center">
+        <div className="max-w-xl">
           <p className="text-sm font-semibold uppercase tracking-wider text-green">
-            Simple Pricing
+            Pricing
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
             No Surprises. No Contracts.
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-lg text-muted">
-            Start with a free preview. Keep it live when you&rsquo;re ready.
+          <p className="mt-4 text-lg text-muted">
+            Start free. Keep it only if you love it.
           </p>
         </div>
 
-        <div className="mt-16 grid gap-8 lg:grid-cols-3">
+        <div className="mt-16 grid gap-6 lg:grid-cols-3">
           {plans.map((plan) => (
             <div
               key={plan.name}
-              className={`relative flex flex-col rounded-2xl border p-8 transition-colors ${
+              className={`relative flex flex-col rounded-2xl border p-8 ${
                 plan.highlighted
-                  ? "border-green bg-surface-light shadow-lg shadow-green/5"
-                  : "border-border bg-surface hover:border-green/30"
+                  ? "border-green bg-surface shadow-lg shadow-green/5"
+                  : "border-border bg-surface"
               }`}
             >
               {plan.highlighted && (
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-green px-4 py-1 text-xs font-bold uppercase tracking-wider text-background">
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-green px-4 py-1 text-xs font-bold uppercase tracking-wider text-white">
                   Most Popular
                 </div>
               )}
 
-              <h3 className="text-lg font-semibold">{plan.name}</h3>
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-muted">
+                {plan.name}
+              </h3>
               <div className="mt-4 flex items-baseline gap-1">
-                <span className="text-4xl font-bold">{plan.price}</span>
+                <span className="text-4xl font-bold text-foreground">{plan.price}</span>
                 {plan.period && (
-                  <span className="text-muted">{plan.period}</span>
+                  <span className="text-sm text-muted">{plan.period}</span>
                 )}
               </div>
-              <p className="mt-4 text-sm leading-relaxed text-muted">
+              <p className="mt-3 text-sm leading-relaxed text-muted">
                 {plan.description}
               </p>
 
               <ul className="mt-8 flex-1 space-y-3" role="list">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-3 text-sm">
-                    <Check
-                      className="mt-0.5 h-4 w-4 shrink-0 text-green"
-                      aria-hidden="true"
-                    />
-                    <span>{feature}</span>
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-green" aria-hidden="true" />
+                    <span className="text-foreground">{feature}</span>
                   </li>
                 ))}
               </ul>
 
               <a
                 href={plan.href}
-                className={`mt-8 block rounded-lg py-3 text-center text-sm font-semibold transition-all ${
+                className={`mt-8 block rounded-full py-3 text-center text-sm font-semibold transition-colors ${
                   plan.highlighted
-                    ? "bg-green text-background hover:bg-green-dark"
+                    ? "bg-green text-white hover:bg-green-dark"
                     : "border border-border text-foreground hover:border-green hover:text-green"
                 }`}
               >
@@ -563,65 +538,65 @@ function Pricing() {
 
 function About() {
   return (
-    <section id="about" className="border-t border-border bg-surface py-24">
-      <div className="mx-auto max-w-4xl px-6">
-        <div className="flex flex-col items-center gap-10 md:flex-row md:gap-16">
+    <section id="about" className="border-t border-border py-24">
+      <div className="mx-auto max-w-5xl px-6">
+        <div className="flex flex-col items-start gap-12 md:flex-row md:items-center md:gap-16">
           <a
             href="https://www.linkedin.com/in/ryan-irwin-tech/"
             target="_blank"
             rel="noopener noreferrer"
-            className="shrink-0 group"
+            className="group shrink-0"
+            aria-label="Ryan Irwin on LinkedIn"
           >
             <div className="relative">
               <Image
                 src="/ryan.jpg"
                 alt="Ryan Irwin, founder of Grow Local Visibility"
-                width={220}
-                height={220}
-                className="rounded-2xl border-2 border-border object-cover transition-all group-hover:border-green"
+                width={200}
+                height={200}
+                className="rounded-2xl border border-border object-cover transition-all group-hover:border-green"
                 priority={false}
               />
-              <div className="absolute -bottom-2 -right-2 flex h-10 w-10 items-center justify-center rounded-full bg-[#0A66C2] text-white shadow-lg transition-transform group-hover:scale-110">
-                <LinkedinIcon className="h-5 w-5" aria-hidden="true" />
+              <div className="absolute -bottom-2 -right-2 flex h-9 w-9 items-center justify-center rounded-full bg-[#0A66C2] text-white shadow-md transition-transform group-hover:scale-110">
+                <LinkedinIcon className="h-4 w-4" aria-hidden="true" />
               </div>
             </div>
           </a>
+
           <div>
             <p className="text-sm font-semibold uppercase tracking-wider text-green">
-              Meet the Founder
+              About
             </p>
-            <a
-              href="https://www.linkedin.com/in/ryan-irwin-tech/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group"
-            >
-              <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl group-hover:text-green transition-colors">
-                Hey, I&rsquo;m Ryan
-              </h2>
-            </a>
-            <p className="mt-4 text-base leading-relaxed text-muted">
-              I started Grow Local Visibility because I saw too many talented
-              tradespeople and local service pros losing customers simply because
-              they didn&rsquo;t have an online presence. I handle all the tech so
-              you can focus on what you do best: running your business and
-              serving your customers.
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+              Hi, I&rsquo;m Ryan.
+            </h2>
+            <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
+              I started Grow Local Visibility because I kept seeing the same
+              problem: talented tradespeople and local service pros losing
+              customers to competitors — not because they did worse work, but
+              because they were invisible online. I handle everything technical
+              so you can stay focused on the work you&rsquo;re good at.
             </p>
-            <div className="mt-6 flex items-center gap-4">
+            <p className="mt-3 max-w-xl text-base leading-relaxed text-muted">
+              Every site I build is researched and written specifically for your
+              business. Not a template. Not a form you fill out. I do the
+              work upfront — you only pay if you want to keep it.
+            </p>
+            <div className="mt-6 flex flex-wrap items-center gap-4">
               <a
                 href="https://www.linkedin.com/in/ryan-irwin-tech/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-[#0A66C2] transition-colors hover:text-[#004182]"
+                className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm font-medium text-muted transition-colors hover:border-foreground hover:text-foreground"
               >
-                <LinkedinIcon className="h-4 w-4" aria-hidden="true" />
-                Connect on LinkedIn
+                <LinkedinIcon className="h-4 w-4 text-[#0A66C2]" aria-hidden="true" />
+                LinkedIn
               </a>
               <a
                 href="#contact"
                 className="inline-flex items-center gap-2 text-sm font-semibold text-green transition-colors hover:text-green-dark"
               >
-                Let&rsquo;s talk
+                Work with me
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </a>
             </div>
