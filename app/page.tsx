@@ -644,22 +644,16 @@ function FAQItem({ faq }: { faq: { q: string; a: string } }) {
     <div className="border-b border-border">
       <button
         onClick={() => setOpen(!open)}
-        className="flex w-full items-center justify-between py-6 text-left"
+        className="flex w-full items-center justify-between py-5 text-left"
         aria-expanded={open}
       >
-        <span className="pr-4 text-base font-medium">{faq.q}</span>
+        <span className="pr-4 text-sm font-semibold text-foreground">{faq.q}</span>
         <ChevronDown
-          className={`h-5 w-5 shrink-0 text-muted transition-transform ${
-            open ? "rotate-180" : ""
-          }`}
+          className={`h-4 w-4 shrink-0 text-muted transition-transform duration-200 ${open ? "rotate-180" : ""}`}
           aria-hidden="true"
         />
       </button>
-      <div
-        className={`overflow-hidden transition-all duration-300 ${
-          open ? "max-h-40 pb-6" : "max-h-0"
-        }`}
-      >
+      <div className={`overflow-hidden transition-all duration-300 ${open ? "max-h-40 pb-5" : "max-h-0"}`}>
         <p className="text-sm leading-relaxed text-muted">{faq.a}</p>
       </div>
     </div>
@@ -669,20 +663,29 @@ function FAQItem({ faq }: { faq: { q: string; a: string } }) {
 function FAQ() {
   return (
     <section id="faq" className="border-t border-border py-24">
-      <div className="mx-auto max-w-3xl px-6">
-        <div className="text-center">
-          <p className="text-sm font-semibold uppercase tracking-wider text-green">
-            Questions?
-          </p>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-            Frequently Asked Questions
-          </h2>
-        </div>
-
-        <div className="mt-12">
-          {faqs.map((faq) => (
-            <FAQItem key={faq.q} faq={faq} />
-          ))}
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="grid gap-16 lg:grid-cols-2">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wider text-green">FAQ</p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+              Common Questions
+            </h2>
+            <p className="mt-4 text-lg text-muted">
+              Everything you need to know before getting started.
+            </p>
+            <a
+              href="#contact"
+              className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-green transition-colors hover:text-green-dark"
+            >
+              Still have questions? Reach out
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </a>
+          </div>
+          <div>
+            {faqs.map((faq) => (
+              <FAQItem key={faq.q} faq={faq} />
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -711,10 +714,7 @@ function Contact() {
   }
 
   return (
-    <section
-      id="contact"
-      className="border-t border-border bg-surface py-24"
-    >
+    <section id="contact" className="border-t border-border bg-stone-50 py-24">
       <div className="mx-auto max-w-5xl px-6">
         <div className="grid gap-16 lg:grid-cols-2">
           <div>
@@ -722,191 +722,150 @@ function Contact() {
               Get Started
             </p>
             <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-              Ready to Get Found by More Customers?
+              Request Your Free Preview
             </h2>
             <p className="mt-4 text-base leading-relaxed text-muted">
               Fill out the form and we&rsquo;ll get back to you within 24 hours
-              with your free website preview. No obligations, no credit card, no
-              risk.
+              with a preview of your new website. No obligations, no credit
+              card, no risk.
             </p>
 
-            <div className="mt-10 space-y-6">
+            <div className="mt-10 space-y-5">
               <div className="flex items-center gap-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green/10">
-                  <Mail className="h-5 w-5 text-green" aria-hidden="true" />
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-green-light">
+                  <Check className="h-5 w-5 text-green" aria-hidden="true" />
                 </div>
-                <div>
-                  <p className="text-sm text-muted">Email us directly</p>
+                <p className="text-sm text-muted">
+                  We research and build your site before you commit to anything
+                </p>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-green-light">
+                  <Check className="h-5 w-5 text-green" aria-hidden="true" />
+                </div>
+                <p className="text-sm text-muted">
+                  You only pay if you want to keep it live
+                </p>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-green-light">
+                  <Check className="h-5 w-5 text-green" aria-hidden="true" />
+                </div>
+                <p className="text-sm text-muted">
+                  Questions? Email{" "}
                   <a
                     href="mailto:ryan@growlocalvisibility.com"
-                    className="font-medium text-foreground hover:text-green"
+                    className="font-medium text-foreground transition-colors hover:text-green"
                   >
                     ryan@growlocalvisibility.com
                   </a>
-                </div>
+                </p>
               </div>
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border bg-background p-8">
+          <div className="rounded-2xl border border-border bg-surface p-8 shadow-sm shadow-stone-100">
             {submitted ? (
-              <div className="flex h-full flex-col items-center justify-center text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green/10">
-                  <Check className="h-8 w-8 text-green" />
+              <div className="flex h-full flex-col items-center justify-center py-12 text-center">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-green-light">
+                  <Check className="h-7 w-7 text-green" />
                 </div>
-                <h3 className="mt-4 text-xl font-semibold">
-                  Thank You!
-                </h3>
+                <h3 className="mt-4 text-xl font-semibold">You&rsquo;re on the list!</h3>
                 <p className="mt-2 text-sm text-muted">
-                  We&rsquo;ll be in touch within 24 hours.
+                  We&rsquo;ll be in touch within 24 hours with your preview.
                 </p>
               </div>
             ) : (
-              <form
-                action={handleSubmit}
-                className="space-y-5"
-              >
+              <form action={handleSubmit} className="space-y-4">
                 <div>
-                  <label
-                    htmlFor="name"
-                    className="mb-1.5 block text-sm font-medium"
-                  >
+                  <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-foreground">
                     Your Name
                   </label>
                   <div className="relative">
-                    <User
-                      className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
-                      aria-hidden="true"
-                    />
+                    <User className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" aria-hidden="true" />
                     <input
-                      id="name"
-                      name="name"
-                      type="text"
-                      required
+                      id="name" name="name" type="text" required
                       placeholder="John Smith"
-                      className="w-full rounded-lg border border-border bg-surface py-3 pl-10 pr-4 text-sm text-foreground placeholder-muted/50 transition-colors focus:border-green focus:outline-none"
+                      className="w-full rounded-xl border border-border bg-background py-3 pl-10 pr-4 text-sm text-foreground placeholder:text-muted/60 transition-colors focus:border-green focus:outline-none"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label
-                    htmlFor="business"
-                    className="mb-1.5 block text-sm font-medium"
-                  >
+                  <label htmlFor="business" className="mb-1.5 block text-sm font-medium text-foreground">
                     Business Name
                   </label>
                   <div className="relative">
-                    <Building2
-                      className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
-                      aria-hidden="true"
-                    />
+                    <Building2 className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" aria-hidden="true" />
                     <input
-                      id="business"
-                      name="business"
-                      type="text"
-                      required
+                      id="business" name="business" type="text" required
                       placeholder="Smith's Plumbing"
-                      className="w-full rounded-lg border border-border bg-surface py-3 pl-10 pr-4 text-sm text-foreground placeholder-muted/50 transition-colors focus:border-green focus:outline-none"
+                      className="w-full rounded-xl border border-border bg-background py-3 pl-10 pr-4 text-sm text-foreground placeholder:text-muted/60 transition-colors focus:border-green focus:outline-none"
                     />
                   </div>
                 </div>
 
-                <div className="grid gap-5 sm:grid-cols-2">
+                <div className="grid gap-4 sm:grid-cols-2">
                   <div>
-                    <label
-                      htmlFor="phone"
-                      className="mb-1.5 block text-sm font-medium"
-                    >
+                    <label htmlFor="phone" className="mb-1.5 block text-sm font-medium text-foreground">
                       Phone
                     </label>
                     <div className="relative">
-                      <Phone
-                        className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
-                        aria-hidden="true"
-                      />
+                      <Phone className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" aria-hidden="true" />
                       <input
-                        id="phone"
-                        name="phone"
-                        type="tel"
+                        id="phone" name="phone" type="tel"
                         placeholder="(555) 123-4567"
-                        className="w-full rounded-lg border border-border bg-surface py-3 pl-10 pr-4 text-sm text-foreground placeholder-muted/50 transition-colors focus:border-green focus:outline-none"
+                        className="w-full rounded-xl border border-border bg-background py-3 pl-10 pr-4 text-sm text-foreground placeholder:text-muted/60 transition-colors focus:border-green focus:outline-none"
                       />
                     </div>
                   </div>
-
                   <div>
-                    <label
-                      htmlFor="email"
-                      className="mb-1.5 block text-sm font-medium"
-                    >
+                    <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-foreground">
                       Email
                     </label>
                     <div className="relative">
-                      <Mail
-                        className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
-                        aria-hidden="true"
-                      />
+                      <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" aria-hidden="true" />
                       <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        required
+                        id="email" name="email" type="email" required
                         placeholder="john@example.com"
-                        className="w-full rounded-lg border border-border bg-surface py-3 pl-10 pr-4 text-sm text-foreground placeholder-muted/50 transition-colors focus:border-green focus:outline-none"
+                        className="w-full rounded-xl border border-border bg-background py-3 pl-10 pr-4 text-sm text-foreground placeholder:text-muted/60 transition-colors focus:border-green focus:outline-none"
                       />
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <label
-                    htmlFor="google-maps"
-                    className="mb-1.5 block text-sm font-medium"
-                  >
+                  <label htmlFor="google-maps" className="mb-1.5 block text-sm font-medium text-foreground">
                     Google Maps Link{" "}
-                    <span className="text-muted">(paste your business listing URL)</span>
+                    <span className="font-normal text-muted">(optional)</span>
                   </label>
                   <div className="relative">
-                    <Link2
-                      className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
-                      aria-hidden="true"
-                    />
+                    <Link2 className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" aria-hidden="true" />
                     <input
-                      id="google-maps"
-                      name="google-maps"
-                      type="url"
+                      id="google-maps" name="google-maps" type="url"
                       placeholder="https://maps.google.com/..."
-                      className="w-full rounded-lg border border-border bg-surface py-3 pl-10 pr-4 text-sm text-foreground placeholder-muted/50 transition-colors focus:border-green focus:outline-none"
+                      className="w-full rounded-xl border border-border bg-background py-3 pl-10 pr-4 text-sm text-foreground placeholder:text-muted/60 transition-colors focus:border-green focus:outline-none"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label
-                    htmlFor="message"
-                    className="mb-1.5 block text-sm font-medium"
-                  >
+                  <label htmlFor="message" className="mb-1.5 block text-sm font-medium text-foreground">
                     Message{" "}
-                    <span className="text-muted">(optional)</span>
+                    <span className="font-normal text-muted">(optional)</span>
                   </label>
                   <div className="relative">
-                    <MessageCircle
-                      className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted"
-                      aria-hidden="true"
-                    />
+                    <MessageCircle className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted" aria-hidden="true" />
                     <textarea
-                      id="message"
-                      name="message"
-                      rows={3}
+                      id="message" name="message" rows={3}
                       placeholder="Tell us about your business..."
-                      className="w-full rounded-lg border border-border bg-surface py-3 pl-10 pr-4 text-sm text-foreground placeholder-muted/50 transition-colors focus:border-green focus:outline-none"
+                      className="w-full rounded-xl border border-border bg-background py-3 pl-10 pr-4 text-sm text-foreground placeholder:text-muted/60 transition-colors focus:border-green focus:outline-none"
                     />
                   </div>
                 </div>
 
                 {error && (
-                  <p className="rounded-lg bg-red-500/10 px-4 py-3 text-sm text-red-400">
+                  <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
                     {error}
                   </p>
                 )}
@@ -914,7 +873,7 @@ function Contact() {
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="w-full rounded-lg bg-green py-3.5 text-sm font-semibold text-background transition-all hover:bg-green-dark hover:scale-[1.01] disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full rounded-full bg-green py-3.5 text-sm font-semibold text-white transition-colors hover:bg-green-dark disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {isPending ? "Sending..." : "Get My Free Preview"}
                 </button>
@@ -937,23 +896,18 @@ function Contact() {
 
 function Footer() {
   return (
-    <footer className="border-t border-border py-12">
+    <footer className="border-t border-border py-10">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:justify-between sm:text-left">
-          <div className="flex items-center gap-2 text-sm font-semibold">
-            <MapPin className="h-4 w-4 text-green" aria-hidden="true" />
-            <span>
-              Grow<span className="text-green">Local</span> Visibility
-            </span>
-          </div>
-
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <span className="text-sm font-bold tracking-tight text-foreground">
+            Grow<span className="text-green">Local</span>Visibility
+          </span>
           <a
             href="mailto:ryan@growlocalvisibility.com"
             className="text-sm text-muted transition-colors hover:text-foreground"
           >
             ryan@growlocalvisibility.com
           </a>
-
           <p className="text-sm text-muted">
             &copy; {new Date().getFullYear()} Grow Local Visibility
           </p>
