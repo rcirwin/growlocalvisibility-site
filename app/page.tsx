@@ -118,60 +118,78 @@ function Navbar() {
 
 function Hero() {
   return (
-    <section className="relative flex min-h-[90vh] items-center justify-center overflow-hidden pt-20">
-      {/* Subtle radial glow */}
-      <div
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full opacity-20"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(34,197,94,0.35) 0%, transparent 70%)",
-        }}
-        aria-hidden="true"
-      />
+    <section className="relative min-h-[100dvh] pt-20">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-16 px-6 py-24 lg:grid-cols-2 lg:py-32">
+        {/* Left: copy */}
+        <div>
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-green-muted bg-green-light px-4 py-1.5 text-sm font-medium text-green">
+            <Check className="h-3.5 w-3.5" aria-hidden="true" />
+            Free preview — no credit card, no commitment
+          </div>
 
-      <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
-        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-1.5 text-sm text-muted">
-          <Star className="h-4 w-4 text-green" aria-hidden="true" />
-          Trusted by local businesses
+          <h1 className="text-4xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+            Your Business Deserves to Be{" "}
+            <span className="text-green">Found</span>
+          </h1>
+
+          <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted">
+            We build a professional website and optimize your Google presence so
+            local customers find you — not your competitors. You see the site
+            first. You only pay if you love it.
+          </p>
+
+          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+            <a
+              href="#contact"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-green px-8 py-4 text-base font-semibold text-white transition-colors hover:bg-green-dark"
+            >
+              See What We Build
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </a>
+            <a
+              href="#how-it-works"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-border px-8 py-4 text-base font-medium text-muted transition-colors hover:border-foreground hover:text-foreground"
+            >
+              How It Works
+            </a>
+          </div>
         </div>
 
-        <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-          Get Found By More{" "}
-          <span className="text-green">Local Customers</span>
-        </h1>
-
-        <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl">
-          We help local service businesses build a professional online presence
-          and get discovered by more customers searching on Google.
-        </p>
-
-        <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-          <a
-            href="#how-it-works"
-            className="inline-flex items-center gap-2 rounded-lg bg-green px-8 py-4 text-base font-semibold text-background transition-all hover:bg-green-dark hover:scale-[1.02]"
-          >
-            See What We Can Do For You
-            <ArrowRight className="h-5 w-5" aria-hidden="true" />
-          </a>
-          <a
-            href="#pricing"
-            className="inline-flex items-center gap-2 rounded-lg border border-border px-8 py-4 text-base font-medium text-muted transition-colors hover:border-green hover:text-foreground"
-          >
-            View Pricing
-          </a>
-        </div>
-
-        <div className="mx-auto mt-16 grid max-w-xl grid-cols-3 gap-8 text-center">
+        {/* Right: trust stats */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {[
-            { value: "97%", label: "Search online first" },
-            { value: "46%", label: "Of Google searches are local" },
-            { value: "78%", label: "Choose the first result" },
+            {
+              value: "97%",
+              label: "of people search online before calling a local business",
+              icon: Search,
+            },
+            {
+              value: "46%",
+              label: "of all Google searches are looking for something local",
+              icon: MapPin,
+            },
+            {
+              value: "70%",
+              label: "of customers skip businesses with no website",
+              icon: Globe,
+            },
+            {
+              value: "$0",
+              label: "to see your completed website — we build it first",
+              icon: Check,
+            },
           ].map((stat) => (
-            <div key={stat.label}>
-              <p className="text-2xl font-bold text-green sm:text-3xl">
+            <div
+              key={stat.value}
+              className="rounded-2xl border border-border bg-surface p-6 shadow-sm shadow-stone-100"
+            >
+              <stat.icon className="h-5 w-5 text-green" aria-hidden="true" />
+              <p className="mt-3 text-3xl font-bold text-foreground">
                 {stat.value}
               </p>
-              <p className="mt-1 text-xs text-muted sm:text-sm">{stat.label}</p>
+              <p className="mt-1.5 text-sm leading-relaxed text-muted">
+                {stat.label}
+              </p>
             </div>
           ))}
         </div>
