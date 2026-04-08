@@ -373,8 +373,11 @@ function HowItWorks() {
         </div>
 
         <div className="mt-16 grid gap-10 md:grid-cols-3">
-          {steps.map((step) => (
+          {steps.map((step, i) => (
             <div key={step.num} className="relative">
+              {i < steps.length - 1 && (
+                <div className="absolute top-6 hidden border-t border-dashed border-border md:block" style={{ width: "calc(100% - 3rem)", left: "calc(50% + 1.5rem)" }} aria-hidden="true" />
+              )}
               <div className="flex h-12 w-12 items-center justify-center rounded-xl border-2 border-green bg-green-light">
                 <step.icon className="h-5 w-5 text-green" aria-hidden="true" />
               </div>
