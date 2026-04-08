@@ -52,37 +52,32 @@ function Navbar() {
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl"
+      className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-surface/90 backdrop-blur-xl"
       aria-label="Main navigation"
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a href="#" className="flex items-center gap-2 text-lg font-semibold">
-          <MapPin className="h-5 w-5 text-green" aria-hidden="true" />
-          <span>
-            Grow<span className="text-green">Local</span>
-          </span>
+        <a href="#" className="text-base font-bold tracking-tight text-foreground">
+          Grow<span className="text-green">Local</span>Visibility
         </a>
 
-        {/* Desktop links */}
         <div className="hidden items-center gap-8 md:flex">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="text-sm text-muted transition-colors hover:text-foreground"
+              className="text-sm font-medium text-muted transition-colors hover:text-foreground"
             >
               {l.label}
             </a>
           ))}
           <a
             href="#contact"
-            className="rounded-lg bg-green px-4 py-2 text-sm font-medium text-background transition-colors hover:bg-green-dark"
+            className="rounded-full bg-green px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-green-dark"
           >
-            Get Started
+            Get Started Free
           </a>
         </div>
 
-        {/* Mobile hamburger */}
         <button
           onClick={() => setOpen(!open)}
           className="md:hidden text-foreground"
@@ -92,15 +87,14 @@ function Navbar() {
         </button>
       </div>
 
-      {/* Mobile menu */}
       {open && (
-        <div className="border-t border-border bg-background px-6 py-4 md:hidden">
+        <div className="border-t border-border bg-surface px-6 py-4 md:hidden">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="block py-3 text-sm text-muted transition-colors hover:text-foreground"
+              className="block py-3 text-sm font-medium text-muted transition-colors hover:text-foreground"
             >
               {l.label}
             </a>
@@ -108,9 +102,9 @@ function Navbar() {
           <a
             href="#contact"
             onClick={() => setOpen(false)}
-            className="mt-2 block rounded-lg bg-green px-4 py-3 text-center text-sm font-medium text-background transition-colors hover:bg-green-dark"
+            className="mt-3 block rounded-full bg-green px-4 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-green-dark"
           >
-            Get Started
+            Get Started Free
           </a>
         </div>
       )}
