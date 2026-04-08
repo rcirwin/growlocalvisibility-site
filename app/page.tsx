@@ -118,7 +118,7 @@ function Navbar() {
 
 function Hero() {
   return (
-    <section className="relative min-h-[100dvh] pt-20">
+    <section className="relative pt-20">
       <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-16 px-6 py-24 lg:grid-cols-2 lg:py-32">
         {/* Left: copy */}
         <div>
