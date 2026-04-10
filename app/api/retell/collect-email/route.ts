@@ -12,13 +12,40 @@ function getResend() {
   return new Resend(process.env.RESEND_API_KEY || "");
 }
 
+/**
+ * Normalize spoken email into proper format.
+ * Handles: "buddy at buddy dot com" → "buddy@buddy.com"
+ *          "john dot smith at gmail dot com" → "john.smith@gmail.com"
+ *          "info at tonys-plumbing dot net" → "info@tonys-plumbing.net"
+ */
+function normalizeEmail(spoken: string): string {
+  let email = spoken.trim().toLowerCase();
+
+  // Replace spoken patterns with symbols
+  email = email.replace(/\s+at\s+/g, "@");
+  email = email.replace(/\s+dot\s+/g, ".");
+  email = email.replace(/\s+dash\s+/g, "-");
+  email = email.replace(/\s+underscore\s+/g, "_");
+
+  // Remove any remaining spaces
+  email = email.replace(/\s+/g, "");
+
+  // Basic validation — if it doesn't look like an email, return as-is
+  if (!email.includes("@") || !email.includes(".")) {
+    console.warn(`[collect-email] Could not normalize email: "${spoken}" → "${email}"`);
+  }
+
+  return email;
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const args = body.args || body;
-    const { email, business_name } = args;
+    const { email: rawEmail, business_name } = args;
 
-    console.log(`[collect-email] ${email} for ${business_name}`);
+    const email = normalizeEmail(rawEmail);
+    console.log(`[collect-email] Raw: "${rawEmail}" → Normalized: "${email}" for ${business_name}`);
 
     // Update CRM
     const lead = await findLeadByName(business_name);
