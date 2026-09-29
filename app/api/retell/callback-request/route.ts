@@ -5,7 +5,8 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { findLeadByName, updateLeadRow } from "../sheets";
+import { findLeadByName, findLeadByPhone, updateLeadRow } from "../sheets";
+import { leadPhoneFromCall } from "../match";
 import { Resend } from "resend";
 
 function getResend() {
@@ -20,7 +21,10 @@ export async function POST(req: NextRequest) {
 
     console.log(`[callback] ${business_name} wants callback at ${preferred_time}`);
 
-    const lead = await findLeadByName(business_name);
+    const callPhone = leadPhoneFromCall(body.call);
+    const lead =
+      (callPhone ? await findLeadByPhone(callPhone) : null) ||
+      (business_name ? await findLeadByName(business_name) : null);
     if (lead) {
       await updateLeadRow(lead._row, {
         callback_requested: "TRUE",

@@ -5,7 +5,8 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { findLeadByName, updateLeadRow } from "../sheets";
+import { findLeadByName, findLeadByPhone, updateLeadRow } from "../sheets";
+import { leadPhoneFromCall } from "../match";
 import { Resend } from "resend";
 
 function getResend() {
@@ -47,8 +48,11 @@ export async function POST(req: NextRequest) {
     const email = normalizeEmail(rawEmail);
     console.log(`[collect-email] Raw: "${rawEmail}" → Normalized: "${email}" for ${business_name}`);
 
-    // Update CRM
-    const lead = await findLeadByName(business_name);
+    // Update CRM: match the live call's number first, then an unambiguous name
+    const callPhone = leadPhoneFromCall(body.call);
+    const lead =
+      (callPhone ? await findLeadByPhone(callPhone) : null) ||
+      (business_name ? await findLeadByName(business_name) : null);
     if (lead) {
       await updateLeadRow(lead._row, {
         email,

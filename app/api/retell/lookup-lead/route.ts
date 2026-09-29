@@ -5,7 +5,8 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { findLeadByPhone, findLeadByName, readAllLeads, type LeadRow } from "../sheets";
+import { findLeadByPhone, findLeadsByName, type LeadRow } from "../sheets";
+import { leadPhoneFromCall } from "../match";
 
 function formatLeadForAgent(lead: LeadRow): string {
   const parts: string[] = [];
@@ -50,29 +51,29 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const args = body.args || body;
-    const { business_name, phone_number } = args;
+    const { business_name, phone_number, caller_phone } = args;
 
-    console.log(`[lookup] Search: name="${business_name || ""}" phone="${phone_number || ""}"`);
+    console.log(`[lookup] Search: name="${business_name || ""}" phone="${phone_number || caller_phone || ""}"`);
 
     let lead: LeadRow | null = null;
 
-    // Try phone first (more precise), then name
-    if (phone_number) {
-      lead = await findLeadByPhone(phone_number);
-    }
-    if (!lead && business_name) {
-      lead = await findLeadByName(business_name);
+    // Phone first (exact): a number the agent passed, then the lead's number
+    // from the live call itself.
+    for (const phone of [phone_number, caller_phone, leadPhoneFromCall(body.call)]) {
+      if (lead) break;
+      if (phone) lead = await findLeadByPhone(String(phone));
     }
 
-    // Partial match fallback
+    // Then the name, only if it identifies exactly one lead.
     if (!lead && business_name) {
-      const allLeads = await readAllLeads();
-      const lower = business_name.toLowerCase();
-      lead = allLeads.find(l => {
-        const name = String(l.business_name || "").toLowerCase();
-        const searchWords = lower.split(/\s+/);
-        return searchWords.some((w: string) => w.length > 2 && name.includes(w));
-      }) || null;
+      const matches = await findLeadsByName(business_name);
+      if (matches.length > 1) {
+        console.log(`[lookup] Ambiguous: "${business_name}" matched ${matches.length} leads`);
+        return NextResponse.json({
+          result: `I found a few businesses with a name like that. Can you tell me the city they're in, or the phone number on their Google listing?`,
+        });
+      }
+      lead = matches[0] || null;
     }
 
     if (!lead) {

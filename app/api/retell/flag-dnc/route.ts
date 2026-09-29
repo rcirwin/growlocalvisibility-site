@@ -6,6 +6,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { findLeadByPhone, findLeadByName, updateLeadRow } from "../sheets";
+import { leadPhoneFromCall } from "../match";
 
 export async function POST(req: NextRequest) {
   try {
@@ -15,8 +16,13 @@ export async function POST(req: NextRequest) {
 
     console.log(`[DNC] ⚠️ Flagging ${business_name} (${phone_number}) as DO NOT CALL`);
 
-    // Try to find by phone first, then by name
-    let lead = phone_number ? await findLeadByPhone(phone_number) : null;
+    // Phone first (the live call's number, then the one the agent passed),
+    // then an unambiguous name match
+    const callPhone = leadPhoneFromCall(body.call);
+    let lead = callPhone ? await findLeadByPhone(callPhone) : null;
+    if (!lead && phone_number) {
+      lead = await findLeadByPhone(phone_number);
+    }
     if (!lead && business_name) {
       lead = await findLeadByName(business_name);
     }

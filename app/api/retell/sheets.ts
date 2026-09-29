@@ -4,6 +4,7 @@
  */
 
 import { google } from "googleapis";
+import { matchLeadsByName } from "./match";
 
 const SPREADSHEET_ID = "1Jum7Y-95AyFwrGsutpXbDNwvGS3VeUb4oKLq6QKxTW4";
 const SHEET_NAME = "Leads";
@@ -105,19 +106,17 @@ export async function findLeadByPhone(
   return null;
 }
 
+/** Every lead matching a spoken business name (see match.ts for the rules). */
+export async function findLeadsByName(businessName: string): Promise<LeadRow[]> {
+  return matchLeadsByName<LeadRow>(await readAllLeads(), businessName);
+}
+
+/** The lead matching a spoken business name, or null if none or ambiguous. */
 export async function findLeadByName(
   businessName: string
 ): Promise<LeadRow | null> {
-  const leads = await readAllLeads();
-  const lower = businessName.toLowerCase();
-
-  return (
-    leads.find(
-      (l) =>
-        l.business_name &&
-        String(l.business_name).toLowerCase().includes(lower)
-    ) || null
-  );
+  const matches = await findLeadsByName(businessName);
+  return matches.length === 1 ? matches[0] : null;
 }
 
 export async function updateLeadRow(
