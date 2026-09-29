@@ -23,9 +23,9 @@ export async function POST(req: NextRequest) {
     const lead = await findLeadByName(business_name);
     if (lead) {
       await updateLeadRow(lead._row, {
-        AQ: "TRUE",
-        AO: `Callback requested: ${preferred_time}`,
-        AH: new Date().toISOString(),
+        callback_requested: "TRUE",
+        call_notes: `Callback requested: ${preferred_time}`,
+        updated_at: new Date().toISOString(),
       });
 
       // Notify Ryan via email

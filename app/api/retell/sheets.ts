@@ -8,8 +8,11 @@ import { google } from "googleapis";
 const SPREADSHEET_ID = "1Jum7Y-95AyFwrGsutpXbDNwvGS3VeUb4oKLq6QKxTW4";
 const SHEET_NAME = "Leads";
 
+// Must match the live sheet's header row exactly (source of truth:
+// website-builder/scripts/sheets-api.js). Routes write by column NAME, never by
+// letter, so inserting a column only requires updating this list.
 const HEADERS = [
-  "business_name", "business_slug", "address", "phone", "email", "google_maps_url",
+  "business_name", "ryans_cold_calling_results", "business_slug", "address", "phone", "email", "google_maps_url",
   "services_list", "services_detailed", "description", "owner_name", "years_in_business",
   "service_area", "review_summary", "standout_reviews", "review_count", "average_rating",
   "hours", "photo_urls", "social_links", "certifications", "primary_category",
@@ -18,6 +21,7 @@ const HEADERS = [
   "contact_name", "created_at", "updated_at", "error_notes", "additional_info",
   "skills_used", "call_attempts", "last_call_date", "call_outcome", "call_notes",
   "preferred_contact", "callback_requested", "call_recording_url", "dnc_flagged",
+  "existing_website", "website_checked_at", "website_check_result",
 ];
 
 // Column name to letter mapping

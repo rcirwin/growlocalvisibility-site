@@ -51,13 +51,13 @@ export async function POST(req: NextRequest) {
     const lead = await findLeadByName(business_name);
     if (lead) {
       await updateLeadRow(lead._row, {
-        E: email,
-        AP: "email",
-        AH: new Date().toISOString(),
+        email,
+        preferred_contact: "email",
+        updated_at: new Date().toISOString(),
       });
       console.log(`[collect-email] Updated row ${lead._row}`);
 
-      // Send the website + demo email immediately
+      // Send the website link immediately (no em dashes in customer copy)
       if (lead.vercel_url) {
         try {
           await getResend().emails.send({
@@ -67,18 +67,20 @@ export async function POST(req: NextRequest) {
             text: [
               `Hi${lead.owner_name ? ` ${lead.owner_name}` : ""},`,
               "",
-              `As promised on the phone, here's the website we built for ${lead.business_name}:`,
+              `As promised on the phone, here's the free website we built for ${lead.business_name}:`,
               "",
               `Website: ${lead.vercel_url}`,
               lead.demo_url ? `Video walkthrough: ${lead.demo_url}` : "",
               "",
               `It highlights your ${lead.primary_category || "services"} and showcases your great Google reviews.`,
               "",
-              `The preview is completely free for 14 days. If you love it and want to keep it live, it's $99/month — that includes hosting, updates, Google Business Profile optimization, monthly SEO reports, and automated review responses.`,
+              `It's yours to keep, free. No credit card, no contract, and it doesn't expire.`,
               "",
-              `Or you can own the website outright for a one-time $500.`,
+              `The best next step is to add it to your Google Maps listing so people who find you on Google can click straight through. Open your Google Business Profile, choose Edit profile, paste the link above into the Website field, and save. Reply to this email if you'd like a hand.`,
               "",
-              `Take a look and let me know what you think! I'm happy to make any changes you'd like.`,
+              `If you ever want more, like your own domain or help ranking higher on Google Maps, every plan is at growlocalvisibility.com. None of it is required.`,
+              "",
+              `Take a look and let me know what you think! I'm happy to make any changes you'd like, free.`,
               "",
               `Ryan Irwin`,
               `Grow Local Visibility`,
@@ -96,7 +98,7 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({
-      result: `Email ${email} recorded for ${business_name}. Sending website and demo video now.`,
+      result: `Email ${email} recorded for ${business_name}. Sending the website link now.`,
     });
   } catch (err) {
     console.error("[collect-email] Error:", err);

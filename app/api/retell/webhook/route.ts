@@ -7,17 +7,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { findLeadByPhone, updateLeadRow } from "../sheets";
 
-// Outcome mapping: Retell post-call analysis → CRM columns
+// Outcome mapping: Retell post-call analysis → CRM columns (by name)
 const OUTCOME_MAP: Record<string, Record<string, string>> = {
-  interested_got_email: { AN: "spoke-interested", Z: "contacted", AD: "interested" },
-  interested_no_email: { AN: "spoke-interested", Z: "contacted", AD: "interested" },
-  not_interested: { AN: "spoke-declined", Z: "contacted", AD: "declined" },
-  hard_no_dnc: { AN: "hard-no", Z: "contacted", AD: "declined", AS: "TRUE" },
-  voicemail_left: { AN: "voicemail-left" },
-  no_answer: { AN: "no-answer" },
-  wrong_number: { AN: "wrong-number", Z: "failed-voice", AI: "Wrong number or disconnected" },
-  callback_requested: { AN: "spoke-interested", AQ: "TRUE" },
-  already_has_website_builder: { AN: "spoke-declined", Z: "contacted", AD: "declined" },
+  interested_got_email: { call_outcome: "spoke-interested", pipeline_status: "contacted", lead_response: "interested" },
+  interested_no_email: { call_outcome: "spoke-interested", pipeline_status: "contacted", lead_response: "interested" },
+  not_interested: { call_outcome: "spoke-declined", pipeline_status: "contacted", lead_response: "declined" },
+  hard_no_dnc: { call_outcome: "hard-no", pipeline_status: "contacted", lead_response: "declined", dnc_flagged: "TRUE" },
+  voicemail_left: { call_outcome: "voicemail-left" },
+  no_answer: { call_outcome: "no-answer" },
+  wrong_number: { call_outcome: "wrong-number", pipeline_status: "failed-voice", error_notes: "Wrong number or disconnected" },
+  callback_requested: { call_outcome: "spoke-interested", callback_requested: "TRUE" },
+  already_has_website_builder: { call_outcome: "spoke-declined", pipeline_status: "contacted", lead_response: "declined" },
 };
 
 export async function POST(req: NextRequest) {
@@ -41,30 +41,26 @@ export async function POST(req: NextRequest) {
     console.log(`[webhook] ${event} | ${lead.business_name} (row ${lead._row})`);
 
     if (event === "call_ended") {
-      const currentAttempts = parseInt(String(lead.call_attempts || "0"), 10);
+      // call_attempts is NOT incremented here: the voice-caller run writes a
+      // placement marker (call_attempts + 1) when it dials (RYA-275), so
+      // incrementing again would double-count and burn the 3-attempt limit.
+      // The caller run also owns the failed-voice transition for that reason.
       const updates: Record<string, string> = {
-        AL: String(currentAttempts + 1),
-        AM: new Date().toISOString(),
-        AR: call.recording_url || "",
-        AH: new Date().toISOString(),
+        last_call_date: new Date().toISOString(),
+        call_recording_url: call.recording_url || "",
+        updated_at: new Date().toISOString(),
       };
 
       // Map disconnection reason
       const reason = call.disconnection_reason || "";
       if (reason.includes("voicemail")) {
-        updates.AN = "voicemail-left";
+        updates.call_outcome = "voicemail-left";
       } else if (["user_hangup", "agent_hangup"].includes(reason)) {
-        updates.AN = "spoke";
+        updates.call_outcome = "spoke";
       } else if (["no_answer", "busy"].includes(reason)) {
-        updates.AN = "no-answer";
+        updates.call_outcome = "no-answer";
       } else {
-        updates.AN = reason || "unknown";
-      }
-
-      // Max attempts check
-      if (currentAttempts + 1 >= 3 && updates.AN !== "spoke") {
-        updates.Z = "failed-voice";
-        updates.AI = "Max 3 call attempts without live conversation";
+        updates.call_outcome = reason || "unknown";
       }
 
       await updateLeadRow(lead._row, updates);
@@ -74,7 +70,7 @@ export async function POST(req: NextRequest) {
       const analysis = call.call_analysis || {};
       const custom = analysis.custom_analysis_data || {};
       const updates: Record<string, string> = {
-        AH: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
       };
 
       // Map outcome
@@ -84,20 +80,26 @@ export async function POST(req: NextRequest) {
 
       // Email captured
       if (custom.email_captured) {
-        updates.E = custom.email_captured;
-        updates.AP = "email";
+        updates.email = custom.email_captured;
+        updates.preferred_contact = "email";
       }
 
       // Call summary + notes
       const notes: string[] = [];
       if (custom.call_summary) notes.push(custom.call_summary);
       if (custom.callback_time) {
-        updates.AQ = "TRUE";
+        updates.callback_requested = "TRUE";
         notes.push(`Callback requested: ${custom.callback_time}`);
+      }
+      // Paid-plan interest (quoted only when the lead asks). Growth interest
+      // goes to Ryan personally while its fulfillment is still being built.
+      if (custom.plan_interest && custom.plan_interest !== "none") {
+        notes.push(`Plan interest: ${custom.plan_interest}`);
+        if (custom.plan_interest === "growth_199") updates.callback_requested = "TRUE";
       }
       if (custom.sentiment) notes.push(`Sentiment: ${custom.sentiment}`);
       if (custom.objections_raised) notes.push(`Objections: ${custom.objections_raised}`);
-      if (notes.length > 0) updates.AO = notes.join(" | ");
+      if (notes.length > 0) updates.call_notes = notes.join(" | ");
 
       await updateLeadRow(lead._row, updates);
       console.log(`[webhook] Analyzed: outcome=${custom.call_outcome}, email=${custom.email_captured || "none"}`);

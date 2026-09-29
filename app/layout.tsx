@@ -1,18 +1,27 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Geist, Geist_Mono, Bricolage_Grotesque } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
-const jakarta = Plus_Jakarta_Sans({
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  variable: "--font-jakarta",
-  weight: ["400", "500", "600", "700", "800"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Grow Local Visibility | Professional Websites for Local Businesses",
+  title: "Grow Local Visibility | Get Found By More Local Customers",
   description:
-    "We build professional websites and manage your Google presence so local customers find you first. Free preview — no risk, no commitment.",
+    "We build local service businesses a professional website for free, and it's yours to keep. Add it to your Google Maps listing, then upgrade to Google optimization, review automation, and SEO when you're ready.",
   keywords: [
     "local business website",
     "Google Business Profile",
@@ -23,9 +32,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Ryan Irwin" }],
   openGraph: {
-    title: "Grow Local Visibility | Professional Websites for Local Businesses",
+    title: "Grow Local Visibility | Get Found By More Local Customers",
     description:
-      "We build professional websites and manage your Google presence so local customers find you first.",
+      "We help local service businesses build their online presence and get more customers through Google.",
     url: "https://growlocalvisibility.com",
     siteName: "Grow Local Visibility",
     locale: "en_US",
@@ -33,18 +42,26 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Grow Local Visibility | Professional Websites for Local Businesses",
+    title: "Grow Local Visibility | Get Found By More Local Customers",
     description:
-      "We build professional websites and manage your Google presence so local customers find you first.",
+      "We help local service businesses build their online presence and get more customers through Google.",
   },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang="en" className={`${jakarta.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} ${bricolage.variable} h-full antialiased`}
+    >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         {children}
         <Analytics />

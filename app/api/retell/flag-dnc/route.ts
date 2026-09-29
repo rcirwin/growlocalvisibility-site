@@ -23,12 +23,12 @@ export async function POST(req: NextRequest) {
 
     if (lead) {
       await updateLeadRow(lead._row, {
-        AS: "TRUE",
-        AN: "hard-no",
-        Z: "contacted",
-        AD: "declined",
-        AO: "DO NOT CALL - prospect requested removal",
-        AH: new Date().toISOString(),
+        dnc_flagged: "TRUE",
+        call_outcome: "hard-no",
+        pipeline_status: "contacted",
+        lead_response: "declined",
+        call_notes: "DO NOT CALL - prospect requested removal",
+        updated_at: new Date().toISOString(),
       });
       console.log(`[DNC] Row ${lead._row} permanently flagged`);
     } else {
