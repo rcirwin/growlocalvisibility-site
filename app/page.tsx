@@ -410,6 +410,21 @@ function Services() {
     },
   ];
 
+  const scale = [
+    {
+      title: "Every call answered & booked",
+      body: "The AI picks up every call on the first ring, asks the questions you would, and books the job straight onto your calendar.",
+    },
+    {
+      title: "Fewer no-shows",
+      body: "Confirmation and reminder texts before every appointment, an “on my way” text before you arrive, and automatic rebooking when someone cancels or doesn't show.",
+    },
+    {
+      title: "Ads, done for you",
+      body: "Fresh ad creative every month, and we run your Google and Facebook ads. Your ad budget is paid directly to Google or Meta.",
+    },
+  ];
+
   return (
     <section id="services" className="border-t border-border bg-surface py-24">
       <div className="mx-auto max-w-6xl px-6">
@@ -471,6 +486,21 @@ function Services() {
             </p>
             <div className="mt-4 divide-y divide-border border-y border-green/40">
               {growth.map((f) => (
+                <div key={f.title} className="grid gap-1.5 py-5 sm:grid-cols-[240px_1fr] sm:gap-8">
+                  <h3 className="flex items-start gap-2.5 font-semibold leading-snug">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-green" aria-hidden="true" />
+                    {f.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-muted sm:text-base">{f.body}</p>
+                </div>
+              ))}
+            </div>
+
+            <p className="mt-10 text-xs font-bold uppercase tracking-wider text-green-dark">
+              Added in the Scale plan, $499/mo
+            </p>
+            <div className="mt-4 divide-y divide-border border-y border-green/40">
+              {scale.map((f) => (
                 <div key={f.title} className="grid gap-1.5 py-5 sm:grid-cols-[240px_1fr] sm:gap-8">
                   <h3 className="flex items-start gap-2.5 font-semibold leading-snug">
                     <Check className="mt-0.5 h-4 w-4 shrink-0 text-green" aria-hidden="true" />
@@ -567,7 +597,7 @@ function Compare() {
     { label: "Who does the work", glv: "We do", diy: "You do", agency: "They do" },
     { label: "Time until you're live", glv: "~48 hours", diy: "Weeks of evenings", agency: "4–8 weeks" },
     { label: "Google & Maps optimization", glv: "Included", diy: "You figure it out", agency: "Often extra" },
-    { label: "Monthly cost", glv: "$0 (upgrades $99–199)", diy: "$20–50 + your time", agency: "$300–1,500" },
+    { label: "Monthly cost", glv: "$0 (upgrades $99–499)", diy: "$20–50 + your time", agency: "$300–1,500" },
     { label: "Contract", glv: "None, cancel anytime", diy: "None", agency: "6–12 months" },
   ];
 
@@ -645,6 +675,7 @@ function Pricing() {
       href: "#contact",
       highlighted: false,
       badge: null,
+      outright: true,
     },
     {
       name: "Managed",
@@ -683,20 +714,23 @@ function Pricing() {
       badge: "New",
     },
     {
-      name: "Own It Outright",
-      price: "$500",
-      period: " one-time",
-      description: "The full website code, yours. No recurring fees.",
+      name: "Scale",
+      price: "$499",
+      period: "/mo",
+      description: "Calls answered, jobs booked, ads running. We fill your calendar.",
       features: [
-        "Full website source code",
-        "Deploy anywhere you want",
-        "One-time payment, no recurring fees",
-        "Code is 100% yours",
+        "Everything in Growth",
+        "AI answers every call & books the job",
+        "Appointment reminders & “on my way” texts",
+        "Automatic rebooking for no-shows",
+        "Google & Facebook ads, run for you",
+        "Fresh ad creative every month",
       ],
-      cta: "Get Your Free Website",
+      note: "Ad budget is paid directly to Google or Meta.",
+      cta: "Fill My Calendar",
       href: "#contact",
       highlighted: false,
-      badge: null,
+      badge: "New",
     },
   ];
 
@@ -749,10 +783,24 @@ function Pricing() {
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-2.5 text-sm">
                     <Check className="mt-0.5 h-4 w-4 shrink-0 text-green" aria-hidden="true" />
-                    <span>{feature}</span>
+                    <span className="min-w-0 [overflow-wrap:anywhere]">{feature}</span>
                   </li>
                 ))}
               </ul>
+
+              {plan.note && <p className="mt-5 text-xs leading-relaxed text-muted">{plan.note}</p>}
+
+              {plan.outright && (
+                <div className="mt-6 border-t border-border pt-5">
+                  <p className="text-sm font-semibold">
+                    Rather own it outright?{" "}
+                    <span className="whitespace-nowrap">$500 one-time</span>
+                  </p>
+                  <p className="mt-1 text-xs leading-relaxed text-muted">
+                    Get the full source code to host anywhere you like. No recurring fees.
+                  </p>
+                </div>
+              )}
 
               <a
                 href={plan.href}
@@ -881,7 +929,11 @@ const faqs = [
   },
   {
     q: "Will the AI answer all my calls?",
-    a: "Only the ones you can't. Your phone rings like normal. If you don't pick up, or it's outside business hours, the AI steps in so the caller talks to a friendly assistant instead of your voicemail. You stay in control and can turn it off anytime.",
+    a: "On Growth, only the ones you can't. Your phone rings like normal. If you don't pick up, or it's outside business hours, the AI steps in so the caller talks to a friendly assistant instead of your voicemail. On Scale, it can answer every call on the first ring and book the job for you. Either way, you stay in control and can turn it off anytime.",
+  },
+  {
+    q: "What does the Scale plan add?",
+    a: "Scale fills your calendar. On top of everything in Growth, the AI answers every call, qualifies the caller, and books the job onto your calendar. Customers get confirmation and reminder texts, an \"on my way\" text before you arrive, and an automatic rebooking message if they cancel or don't show. We also make fresh ad creative every month and run your Google and Facebook ads. It's $499/month; your ad budget is paid directly to Google or Meta, not to us.",
   },
   {
     q: "Can I own the website outright?",
