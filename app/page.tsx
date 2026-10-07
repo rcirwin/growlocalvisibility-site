@@ -416,6 +416,10 @@ function Services() {
       body: "The AI picks up every call on the first ring, asks the questions you would, and books the job straight onto your calendar.",
     },
     {
+      title: "New leads called in a minute",
+      body: "When someone fills out your website form or responds to an ad, the AI calls and texts them within a minute, then keeps following up until they book.",
+    },
+    {
       title: "Fewer no-shows",
       body: "Confirmation and reminder texts before every appointment, an “on my way” text before you arrive, and automatic rebooking when someone cancels or doesn't show.",
     },
@@ -721,10 +725,10 @@ function Pricing() {
       features: [
         "Everything in Growth",
         "AI answers every call & books the job",
+        "New leads called & texted within a minute",
         "Appointment reminders & “on my way” texts",
         "Automatic rebooking for no-shows",
-        "Google & Facebook ads, run for you",
-        "Fresh ad creative every month",
+        "Google & Facebook ads with fresh creative monthly",
       ],
       note: "Ad budget is paid directly to Google or Meta.",
       cta: "Fill My Calendar",
@@ -933,7 +937,7 @@ const faqs = [
   },
   {
     q: "What does the Scale plan add?",
-    a: "Scale fills your calendar. On top of everything in Growth, the AI answers every call, qualifies the caller, and books the job onto your calendar. Customers get confirmation and reminder texts, an \"on my way\" text before you arrive, and an automatic rebooking message if they cancel or don't show. We also make fresh ad creative every month and run your Google and Facebook ads. It's $499/month; your ad budget is paid directly to Google or Meta, not to us.",
+    a: "Scale fills your calendar. On top of everything in Growth, the AI answers every call, qualifies the caller, and books the job onto your calendar. New leads from your website or ads get a call and a text within a minute. Customers get confirmation and reminder texts, an \"on my way\" text before you arrive, and an automatic rebooking message if they cancel or don't show. We also make fresh ad creative every month and run your Google and Facebook ads. It's $499/month; your ad budget is paid directly to Google or Meta, not to us.",
   },
   {
     q: "Can I own the website outright?",
