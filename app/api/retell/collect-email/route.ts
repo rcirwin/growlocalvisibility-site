@@ -8,35 +8,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { findLeadByName, findLeadByPhone, updateLeadRow } from "../sheets";
 import { leadPhoneFromCall } from "../match";
 import { Resend } from "resend";
+import { normalizeEmail, usableLeadEmail } from "../email";
 
 function getResend() {
   return new Resend(process.env.RESEND_API_KEY || "");
-}
-
-/**
- * Normalize spoken email into proper format.
- * Handles: "buddy at buddy dot com" → "buddy@buddy.com"
- *          "john dot smith at gmail dot com" → "john.smith@gmail.com"
- *          "info at tonys-plumbing dot net" → "info@tonys-plumbing.net"
- */
-function normalizeEmail(spoken: string): string {
-  let email = spoken.trim().toLowerCase();
-
-  // Replace spoken patterns with symbols
-  email = email.replace(/\s+at\s+/g, "@");
-  email = email.replace(/\s+dot\s+/g, ".");
-  email = email.replace(/\s+dash\s+/g, "-");
-  email = email.replace(/\s+underscore\s+/g, "_");
-
-  // Remove any remaining spaces
-  email = email.replace(/\s+/g, "");
-
-  // Basic validation — if it doesn't look like an email, return as-is
-  if (!email.includes("@") || !email.includes(".")) {
-    console.warn(`[collect-email] Could not normalize email: "${spoken}" → "${email}"`);
-  }
-
-  return email;
 }
 
 export async function POST(req: NextRequest) {
@@ -45,8 +20,18 @@ export async function POST(req: NextRequest) {
     const args = body.args || body;
     const { email: rawEmail, business_name } = args;
 
-    const email = normalizeEmail(rawEmail);
-    console.log(`[collect-email] Raw: "${rawEmail}" → Normalized: "${email}" for ${business_name}`);
+    const email = usableLeadEmail(rawEmail);
+    console.log(`[collect-email] Raw: "${rawEmail}" → Normalized: "${email ?? normalizeEmail(String(rawEmail || ""))}" for ${business_name}`);
+
+    // Never store or send to our own address or an unreadable capture (RYA-293).
+    // Ask the agent to confirm the address instead.
+    if (!email) {
+      console.warn(`[collect-email] Rejected unusable email "${rawEmail}" for ${business_name}`);
+      return NextResponse.json({
+        result:
+          "That email didn't come through clearly. Please ask them to spell it out, letter by letter, and confirm it back.",
+      });
+    }
 
     // Update CRM: match the live call's number first, then an unambiguous name
     const callPhone = leadPhoneFromCall(body.call);

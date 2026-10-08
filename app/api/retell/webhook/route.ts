@@ -6,6 +6,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { findLeadByPhone, updateLeadRow } from "../sheets";
+import { shouldWriteEmail, usableLeadEmail } from "../email";
 
 // Outcome mapping: Retell post-call analysis → CRM columns (by name)
 const OUTCOME_MAP: Record<string, Record<string, string>> = {
@@ -78,10 +79,15 @@ export async function POST(req: NextRequest) {
         Object.assign(updates, OUTCOME_MAP[custom.call_outcome]);
       }
 
-      // Email captured
-      if (custom.email_captured) {
-        updates.email = custom.email_captured;
+      // Email captured. Retell often records our own address here (RYA-293),
+      // so only a usable, non-GLV email is written, and a real address
+      // already in the CRM is only replaced when the lead gave one on the call.
+      const capturedEmail = usableLeadEmail(custom.email_captured);
+      if (capturedEmail && shouldWriteEmail(lead.email as string, custom.call_outcome)) {
+        updates.email = capturedEmail;
         updates.preferred_contact = "email";
+      } else if (custom.email_captured) {
+        console.log(`[webhook] Skipped email_captured "${custom.email_captured}" (row ${lead._row})`);
       }
 
       // Call summary + notes
