@@ -7,6 +7,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { findLeadByPhone, updateLeadRow } from "../sheets";
 import { shouldWriteEmail, usableLeadEmail } from "../email";
+import { endedOutcome, verifyOutcome } from "../classify";
 
 // Outcome mapping: Retell post-call analysis → CRM columns (by name)
 const OUTCOME_MAP: Record<string, Record<string, string>> = {
@@ -16,8 +17,11 @@ const OUTCOME_MAP: Record<string, Record<string, string>> = {
   hard_no_dnc: { call_outcome: "hard-no", pipeline_status: "contacted", lead_response: "declined", dnc_flagged: "TRUE" },
   voicemail_left: { call_outcome: "voicemail-left" },
   no_answer: { call_outcome: "no-answer" },
+  // Set by verifyOutcome() when a positive Retell label is not backed by the transcript.
+  spoke_neutral: { call_outcome: "spoke-neutral" },
   wrong_number: { call_outcome: "wrong-number", pipeline_status: "failed-voice", error_notes: "Wrong number or disconnected" },
-  callback_requested: { call_outcome: "spoke-interested", callback_requested: "TRUE" },
+  // A callback request is not interest: the lead has not said yes to the site yet.
+  callback_requested: { call_outcome: "spoke-neutral", callback_requested: "TRUE" },
   already_has_website_builder: { call_outcome: "spoke-declined", pipeline_status: "contacted", lead_response: "declined" },
 };
 
@@ -52,17 +56,9 @@ export async function POST(req: NextRequest) {
         updated_at: new Date().toISOString(),
       };
 
-      // Map disconnection reason
-      const reason = call.disconnection_reason || "";
-      if (reason.includes("voicemail")) {
-        updates.call_outcome = "voicemail-left";
-      } else if (["user_hangup", "agent_hangup"].includes(reason)) {
-        updates.call_outcome = "spoke";
-      } else if (["no_answer", "busy"].includes(reason)) {
-        updates.call_outcome = "no-answer";
-      } else {
-        updates.call_outcome = reason || "unknown";
-      }
+      // Map disconnection reason. A hang-up where the prospect said nothing
+      // (or only a recording spoke) is not "spoke".
+      updates.call_outcome = endedOutcome(call.disconnection_reason || "", call.transcript_object);
 
       await updateLeadRow(lead._row, updates);
     }
@@ -74,16 +70,20 @@ export async function POST(req: NextRequest) {
         updated_at: new Date().toISOString(),
       };
 
-      // Map outcome
-      if (custom.call_outcome && OUTCOME_MAP[custom.call_outcome]) {
-        Object.assign(updates, OUTCOME_MAP[custom.call_outcome]);
-      }
-
       // Email captured. Retell often records our own address here (RYA-293),
       // so only a usable, non-GLV email is written, and a real address
       // already in the CRM is only replaced when the lead gave one on the call.
       const capturedEmail = usableLeadEmail(custom.email_captured);
-      if (capturedEmail && shouldWriteEmail(lead.email as string, custom.call_outcome)) {
+
+      // Map outcome, after checking Retell's label against the transcript.
+      // Retell marks most mid-pitch hang-ups "interested" and reads
+      // auto-replies as callback requests (2026-11-05 review: 1 real lead of 11).
+      const verdict = verifyOutcome(custom.call_outcome || "", call.transcript_object, !!capturedEmail);
+      if (verdict.outcome && OUTCOME_MAP[verdict.outcome]) {
+        Object.assign(updates, OUTCOME_MAP[verdict.outcome]);
+      }
+      const verifiedCallback = verdict.outcome === "callback_requested";
+      if (capturedEmail && shouldWriteEmail(lead.email as string, verdict.outcome)) {
         updates.email = capturedEmail;
         updates.preferred_contact = "email";
       } else if (custom.email_captured) {
@@ -93,7 +93,8 @@ export async function POST(req: NextRequest) {
       // Call summary + notes
       const notes: string[] = [];
       if (custom.call_summary) notes.push(custom.call_summary);
-      if (custom.callback_time) {
+      if (verdict.downgradeReason) notes.push(`Auto-check: ${verdict.downgradeReason}, wrote ${verdict.outcome}`);
+      if (custom.callback_time && (verifiedCallback || verdict.outcome.startsWith("interested"))) {
         updates.callback_requested = "TRUE";
         notes.push(`Callback requested: ${custom.callback_time}`);
       }
